@@ -18,6 +18,8 @@ VIEJO=2
 a_list = [JOVEN, VIEJO]
 distribution = [.7, .3]
 random_number= random.choices(a_list,distribution)
+for i in random_number:
+        X=random_number[i-1]
 
 for i in range(1, 10):
     time_between_arrives = 1
@@ -27,7 +29,7 @@ for i in range(1, 10):
 
     #Initialize
     clock = 0
-    events = [(ARRIVE, ran.exponential(time_between_arrives),random_number)]
+    events = [(ARRIVE, ran.exponential(time_between_arrives),X)]
     clients_in_queue1 = 0
     clients_in_queue2=0
     cashier_busy = False
@@ -42,7 +44,7 @@ for i in range(1, 10):
         if events[0][0] == ARRIVE:
             events.pop(0)
             events.append((ARRIVE,
-                           clock + ran.exponential(time_between_arrives),random_number))
+                           clock + ran.exponential(time_between_arrives),X))
             if events[0][2] == JOVEN:
 
                 clients_in_queue1 += 1
@@ -50,14 +52,14 @@ for i in range(1, 10):
 
                     clients_in_queue1 -= 1
                     cashier_busy = True
-                    events.append((DEPART, clock + ran.exponential(time_serving),random_number))
+                    events.append((DEPART, clock + ran.exponential(time_serving),X))
             elif events[0][2] == VIEJO:
                 clients_in_queue2 += 1
                 if cashier_busy == False:
 
                     clients_in_queue2 -= 1
                     cashier_busy = True
-                    events.append((DEPART, clock + ran.exponential(time_serving),random_number))
+                    events.append((DEPART, clock + ran.exponential(time_serving),X))
 
 
             
@@ -73,14 +75,14 @@ for i in range(1, 10):
                 cashier_busy = True
                 clients_in_queue1 -= 1
                 
-                events.append((DEPART, clock + ran.exponential(time_serving),random_number))
+                events.append((DEPART, clock + ran.exponential(time_serving),X))
                 events.sort(key=lambda tup: tup[1])
-           
+            
             if clients_in_queue2 > 0:
                 cashier_busy = True
                
                 clients_in_queue2 -= 1
-                events.append((DEPART, clock + ran.exponential(time_serving),random_number))
+                events.append((DEPART, clock + ran.exponential(time_serving),X))
                 events.sort(key=lambda tup: tup[1])
             if clients_in_queue1 == 0 and clients_in_queue2 == 0:
 
